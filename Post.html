@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <title>Exemplo - POST</title>
+</head>
+
+<body>
+    <h1>Exemplo de ajax com verbo POST</h1>
+    <label>Cpf</label>
+    <input type="text" id="cpfCliente" class="form-control mb-3" />
+    <label>Nome</label>
+    <input type="text" id="nomeCliente" class="form-control mb-3" />
+    <button onclick="CadastrarCliente()" class="btn btn-primary">Cadastrar Cliente</button>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script>
+        function CriarObjetoCliente(){
+            var cliente = {
+                cpf: $("#cpfCliente").val(),
+                nome: $("#nomeCliente").val()
+            };
+            return cliente;
+        }
+        //ESTE TRECHO DE CODIGO ABAIXO, E CHAMADO NO CLIQUE DO BOTAO
+        function CadastrarCliente() {
+            var objCliente = CriarObjetoCliente();
+            var jsonCliente = JSON.stringify(objCliente);
+
+            $.ajax({
+                method: "POST",
+                url: "https://es03.aiur.com.br/v1/InserirCliente",
+                //dataType: "json" perceba que comentei esse cara, pois a api não me retorna json (não me retorna nada alem do status code 200)
+                data: jsonCliente, // o que eu vou enviar para o servidor
+                contentType: "application/json"
+            }).done(function (resposta) {
+                console.log(resposta);
+            }).fail(function (details, error) {
+                console.log(details);
+                console.log(error);
+            });
+        }
+    </script>
+</body>
+
+</html>
